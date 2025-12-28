@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>CropBot | Smart Agriculture AI</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- NAVBAR -->
+<nav class="navbar">
+  <div class="logo">🌱 CropBot</div>
+  <ul>
+    <li>Features</li>
+    <li>About</li>
+    <li>Contact</li>
+  </ul>
+</nav>
+
+<!-- HERO SECTION -->
+<section class="hero">
+  <div class="hero-text">
+    <h1>Empowering Farmers with <span>AI Agriculture</span></h1>
+    <p>
+      CropBot uses AI to detect plant diseases, harmful insects, weeds,
+      and provides prevention guidance using image & chat-based assistance.
+    </p>
+    <button>Get Started</button>
+  </div>
+</section>
+
+<!-- FEATURES -->
+<section class="features">
+  <div class="card">
+    <h3>🌾 AI Chat Assistant</h3>
+    <p>Ask farming questions in simple language and get expert advice.</p>
+  </div>
+
+  <div class="card">
+    <h3>📷 Disease Detection</h3>
+    <p>Upload plant images to detect diseases and treatment methods.</p>
+  </div>
+
+  <div class="card">
+    <h3>🐛 Insect Identification</h3>
+    <p>Identify insects harming crops and get prevention steps.</p>
+  </div>
+
+  <div class="card">
+    <h3>🌱 Weed Detection</h3>
+    <p>Detect weeds from images and learn removal techniques.</p>
+  </div>
+</section>
+
+<!-- AI INTERACTION -->
+<section class="ai-section">
+  <div class="chat-box">
+    <h2>CropBot AI Chat</h2>
+    <div id="chat"></div>
+
+    <input type="text" id="userInput" placeholder="Ask about your crop..." />
+    <button onclick="sendMessage()">Send</button>
+  </div>
+
+  <div class="upload-box">
+    <h2>Upload Crop Image</h2>
+    <input type="file" id="imageInput" />
+    <button onclick="analyzeImage()">Analyze Image</button>
+    <p id="imageResult"></p>
+  </div>
+</section>
+
+<footer>
+  <p>© 2026 CropBot | AI for Farmers</p>
+</footer>
+
+<script src="script.js"></script>
+</body>
+</html>
