@@ -8,6 +8,7 @@
   <title>CropBot — Sign In</title>
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500&family=DM+Serif+Display&display=swap"
     rel="stylesheet">
+    <link rel="icon" type="image/png" href="favicon.png">
   <style>
     *,
     *::before,
@@ -24,8 +25,8 @@
       --green-100: #EAF3DE;
 
       --surface-0: #0b120a;
-      --surface-1: #000000;
-      --surface-2: #000000;
+      --surface-1: #0d1510;
+      --surface-2: #0f1812;
       --surface-3: #1f2c1b;
       --border-dim: rgba(99, 153, 34, 0.15);
       --border-mid: rgba(99, 153, 34, 0.28);
@@ -211,7 +212,7 @@
       color: var(--text-primary);
       background: var(--surface-3);
       outline: none;
-      transition: border-color 0.18s, background 0.18s, box-shadow 0.18s;
+      transition: border-color 0.18s, box-shadow 0.18s;
     }
 
     .field input::placeholder {
@@ -224,7 +225,6 @@
 
     .field input:focus {
       border-color: var(--green-400);
-      background: var(--surface-3);
       box-shadow: 0 0 0 3px rgba(99, 153, 34, 0.12);
     }
 
@@ -264,29 +264,90 @@
       color: var(--green-300);
     }
 
-    .btn-signin {
-      width: 100%;
+    /* ── Button row ── */
+    .btn-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+
+    .btn-login,
+    .btn-signup {
       height: 48px;
-      background: var(--green-400);
-      color: #0b120a;
-      border: none;
       border-radius: 8px;
       font-family: 'DM Sans', sans-serif;
       font-size: 0.9rem;
       font-weight: 500;
       letter-spacing: 0.03em;
       cursor: pointer;
-      transition: background 0.18s, transform 0.12s;
+      transition: background 0.18s, border-color 0.18s, color 0.18s, transform 0.12s, opacity 0.18s;
     }
 
-    .btn-signin:hover {
+    .btn-login {
+      background: var(--green-400);
+      color: #0b120a;
+      border: none;
+    }
+
+    .btn-login:hover {
       background: var(--green-300);
     }
 
-    .btn-signin:active {
+    .btn-login:active {
       transform: scale(0.985);
     }
 
+    .btn-login:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+
+    .btn-signup {
+      background: transparent;
+      color: var(--green-300);
+      border: 1px solid var(--border-mid);
+    }
+
+    .btn-signup:hover {
+      background: rgba(99, 153, 34, 0.08);
+      border-color: var(--green-400);
+    }
+
+    .btn-signup:active {
+      transform: scale(0.985);
+    }
+
+    .btn-signup:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+
+    /* ── Toast feedback ── */
+    .toast {
+      display: none;
+      margin-top: 0.9rem;
+      padding: 10px 14px;
+      border-radius: 8px;
+      font-size: 0.82rem;
+    }
+
+    .toast.error {
+      background: rgba(220, 60, 60, 0.1);
+      border: 1px solid rgba(220, 60, 60, 0.25);
+      color: #f09090;
+    }
+
+    .toast.success {
+      background: rgba(99, 153, 34, 0.1);
+      border: 1px solid var(--border-mid);
+      color: var(--green-200);
+    }
+
+    .toast.show {
+      display: block;
+    }
+
+    /* ── Divider ── */
     .divider {
       display: flex;
       align-items: center;
@@ -314,7 +375,6 @@
       border-radius: 8px;
       font-family: 'DM Sans', sans-serif;
       font-size: 0.875rem;
-      font-weight: 400;
       color: var(--text-secondary);
       cursor: pointer;
       display: flex;
@@ -378,21 +438,11 @@
     </div>
 
     <div class="left-stats">
-      <div class="stat">
-        <span class="stat-num">98%</span>
-        <span class="stat-label">Diagnosis accuracy</span>
-      </div>
-      <div class="stat">
-        <span class="stat-num">12K+</span>
-        <span class="stat-label">Active farms</span>
-      </div>
-      <div class="stat">
-        <span class="stat-num">40+</span>
-        <span class="stat-label">Crop types</span>
-      </div>
+      <div class="stat"><span class="stat-num">98%</span><span class="stat-label">Diagnosis accuracy</span></div>
+      <div class="stat"><span class="stat-num">12K+</span><span class="stat-label">Active farms</span></div>
+      <div class="stat"><span class="stat-num">40+</span><span class="stat-label">Crop types</span></div>
     </div>
 
-    <!-- Decorative leaf -->
     <svg class="bg-leaves" viewBox="0 0 320 320" fill="none" xmlns="http://www.w3.org/2000/svg">
       <path d="M20 300C20 300 60 140 180 80C300 20 300 20 300 20C300 20 260 180 140 240C60 280 20 300 20 300Z"
         fill="white" />
@@ -408,9 +458,9 @@
       <p class="form-subtitle">Sign in to your CropBot dashboard</p>
     </div>
 
-    <form id="loginForm" onsubmit="handleLogin(event)">
+    <form id="loginForm" onsubmit="return false;">
       <div class="field">
-        <label for="username">Username or Email</label>
+        <label for="username">Email</label>
         <input type="text" id="username" placeholder="you@farm.com" required autocomplete="off">
       </div>
 
@@ -421,12 +471,17 @@
 
       <div class="field-row">
         <label class="remember">
-          <input type="checkbox"> Remember me
+          <input type="checkbox" id="rememberMe"> Remember me
         </label>
         <a href="#" class="forgot-link">Forgot password?</a>
       </div>
 
-      <button type="submit" class="btn-signin">Sign in to CropBot</button>
+      <div class="btn-row">
+        <button type="button" class="btn-signup" id="signupBtn" onclick="signup()">Sign Up</button>
+        <button type="button" class="btn-login" id="loginBtn" onclick="login()">Log In</button>
+      </div>
+
+      <div class="toast" id="toast"></div>
     </form>
 
     <div class="divider">
@@ -435,7 +490,7 @@
       <span class="divider-line"></span>
     </div>
 
-    <button class="btn-demo" onclick="window.location.href='app.html'">
+    <button class="btn-demo" onclick="demoLogin()">
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"
         stroke-linecap="round" stroke-linejoin="round">
         <circle cx="12" cy="8" r="4" />
@@ -445,19 +500,97 @@
     </button>
 
     <p class="form-footer">
-      Don't have an account? <a href="#">Request access</a>
+      Don't have an account? <a href="#" onclick="signup(); return false;">Request access</a>
     </p>
   </div>
 
   <script>
-    function handleLogin(event) {
-      event.preventDefault();
-      const btn = document.querySelector('.btn-signin');
-      btn.textContent = 'Signing in…';
-      btn.style.opacity = '0.75';
-      setTimeout(() => { window.location.href = 'app.html'; }, 900);
+    /* ── Helpers ── */
+    function getFields() {
+      return {
+        email: document.getElementById('username').value.trim(),
+        password: document.getElementById('password').value,
+      };
+    }
+
+    function showToast(msg, type = 'error') {
+      const t = document.getElementById('toast');
+      t.textContent = msg;
+      t.className = `toast ${type} show`;
+      clearTimeout(t._timer);
+      t._timer = setTimeout(() => t.classList.remove('show'), 4000);
+    }
+
+    function setLoading(btnId, loading, label) {
+      const btn = document.getElementById(btnId);
+      btn.disabled = loading;
+      btn.textContent = loading ? label : (btnId === 'loginBtn' ? 'Log In' : 'Sign Up');
+    }
+
+    function validate({ email, password }) {
+      if (!email) return 'Please enter your email.';
+      if (!/\S+@\S+\.\S+/.test(email)) return 'Enter a valid email address.';
+      if (!password) return 'Please enter your password.';
+      if (password.length < 6) return 'Password must be at least 6 characters.';
+      return null;
+    }
+
+    /* ── Login ──
+       Calls handleLogin() from auth.js if it was exported to window,
+       otherwise falls back to a redirect. */
+    async function login() {
+      const fields = getFields();
+      const err = validate(fields);
+      if (err) { showToast(err, 'error'); return; }
+
+      setLoading('loginBtn', true, 'Signing in…');
+      try {
+        if (typeof window.handleLogin === 'function') {
+          await window.handleLogin(fields.email, fields.password);
+        } else {
+          await new Promise(r => setTimeout(r, 900));
+          window.location.href = 'app.html';
+        }
+      } catch (e) {
+        showToast(e?.message || 'Login failed. Please try again.', 'error');
+      } finally {
+        setLoading('loginBtn', false);
+      }
+    }
+
+    /* ── Signup ──
+       Calls handleSignup() from auth.js if exported to window. */
+    async function signup() {
+      const fields = getFields();
+      const err = validate(fields);
+      if (err) { showToast(err, 'error'); return; }
+
+      setLoading('signupBtn', true, 'Creating account…');
+      try {
+        if (typeof window.handleSignup === 'function') {
+          await window.handleSignup(fields.email, fields.password);
+          showToast('Account created! Check your email to verify.', 'success');
+        } else {
+          await new Promise(r => setTimeout(r, 900));
+          showToast('Account created! Check your email to verify.', 'success');
+        }
+      } catch (e) {
+        showToast(e?.message || 'Signup failed. Please try again.', 'error');
+      } finally {
+        setLoading('signupBtn', false);
+      }
+    }
+
+    /* ── Demo login ── */
+    function demoLogin() {
+      showToast('Loading demo environment…', 'success');
+      setTimeout(() => window.location.href = 'app.html', 900);
     }
   </script>
+
+  <!-- auth.js should export handleLogin(email, password) and handleSignup(email, password)
+       and assign them to window so the inline script above can call them. -->
+  <script type="module" src="auth.js"></script>
 </body>
 
 </html>
