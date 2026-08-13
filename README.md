@@ -9,7 +9,7 @@ The project is structured with a clear separation between frontend and backend, 
 ## Features
 - Clean and responsive user interface
 - Crop-related guidance based on user input
-- Simple and fast interaction between frontend and backend
+- Simple and fast interaction between frontend and backend.
 
 ## Tech Stack
 **Frontend**
